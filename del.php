@@ -1,19 +1,5 @@
 <?php require_once('Connections/MAMP.php'); ?>
 <?php
-// *** Logout the current user.
-$logoutGoTo = "login.php";
-if (!isset($_SESSION)) {
-  session_start();
-}
-$_SESSION['MM_Username'] = NULL;
-$_SESSION['MM_UserGroup'] = NULL;
-unset($_SESSION['MM_Username']);
-unset($_SESSION['MM_UserGroup']);
-if ($logoutGoTo != "") {header("Location: $logoutGoTo");
-exit;
-}
-?>
-<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -45,15 +31,11 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$colname_logout = "-1";
-if (isset($_GET['MM_Username'])) {
-  $colname_logout = $_GET['MM_Username'];
-}
 mysql_select_db($database_MAMP, $MAMP);
-$query_logout = sprintf("SELECT * FROM Users WHERE userName = %s", GetSQLValueString($colname_logout, "text"));
-$logout = mysql_query($query_logout, $MAMP) or die(mysql_error());
-$row_logout = mysql_fetch_assoc($logout);
-$totalRows_logout = mysql_num_rows($logout);
+$query_login = "SELECT * FROM Clients";
+$login = mysql_query($query_login, $MAMP) or die(mysql_error());
+$row_login = mysql_fetch_assoc($login);
+$totalRows_login = mysql_num_rows($login);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -65,8 +47,10 @@ h1 {
 	font-weight: lighter;
 }
 </style>
+<link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Untitled Document</title>
+<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -83,15 +67,48 @@ h1 {
     </div>
 <div id="content">
 	<div id="pageHeading">
-	  <h1>You Have Logged Out!</h1>
+	  <h1>Login!</h1>
 	</div>
-    <div id="contentLeft"></div>
-    <div id="contentRight"></div>
+    <div id="contentLeft">Menu Here</div>
+    <div id="contentRight">
+      <form id="loginForm" name="loginForm" method="post" action="">
+        <table width="600" border="0" align="center">
+          <tr>
+            <td><span id="sprytextfield1">
+              <label for="username">Username:</label>
+              <input type="text" name="username" id="username" />
+            <span class="textfieldRequiredMsg">A value is required.</span></span></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td><span id="sprytextfield2">
+              <label for="password">Password:</label>
+              <input type="text" name="password" id="password" />
+            <span class="textfieldRequiredMsg">A value is required.</span></span></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td><input type="submit" name="loginButton" id="loginButton" value="Login" /></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </form>
+    </div>
   </div>
 <div id="footer"></div>
 </div>
+<script type="text/javascript">
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+</script>
 </body>
 </html>
 <?php
-mysql_free_result($logout);
+mysql_free_result($login);
 ?>

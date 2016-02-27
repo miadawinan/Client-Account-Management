@@ -1,3 +1,4 @@
+<?php @session_start(); ?>
 <?php require_once('Connections/MAMP.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
@@ -31,58 +32,37 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$colname_login = "-1";
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "updateForm")) {
+  $updateSQL = sprintf("UPDATE Users SET email=%s, password=%s WHERE userID=%s",
+                       GetSQLValueString($_POST['email'], "text"),
+                       GetSQLValueString($_POST['password'], "text"),
+                       GetSQLValueString($_POST['userID'], "int"));
+
+  mysql_select_db($database_MAMP, $MAMP);
+  $Result1 = mysql_query($updateSQL, $MAMP) or die(mysql_error());
+
+  $updateGoTo = "account.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
+$colname_user = "-1";
 if (isset($_SESSION['MM_Username'])) {
-  $colname_login = $_SESSION['MM_Username'];
+  $colname_user = $_SESSION['MM_Username'];
 }
 mysql_select_db($database_MAMP, $MAMP);
-$query_login = sprintf("SELECT * FROM Users WHERE userName = %s", GetSQLValueString($colname_login, "text"));
-$login = mysql_query($query_login, $MAMP) or die(mysql_error());
-$row_login = mysql_fetch_assoc($login);
-$totalRows_login = mysql_num_rows($login);
-?>
-<?php
-// *** Validate request to login to this site.
-if (!isset($_SESSION)) {
-  session_start();
-}
-
-$loginFormAction = $_SERVER['PHP_SELF'];
-if (isset($_GET['accesscheck'])) {
-  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
-}
-
-if (isset($_POST['username'])) {
-  $loginUsername=$_POST['username'];
-  $password=$_POST['password'];
-  $MM_fldUserAuthorization = "";
-  $MM_redirectLoginSuccess = "account.php";
-  $MM_redirectLoginFailed = "login.php";
-  $MM_redirecttoReferrer = true;
-  mysql_select_db($database_MAMP, $MAMP);
-  
-  $LoginRS__query=sprintf("SELECT userName, password FROM Users WHERE userName=%s AND password=%s",
-    GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
-   
-  $LoginRS = mysql_query($LoginRS__query, $MAMP) or die(mysql_error());
-  $loginFoundUser = mysql_num_rows($LoginRS);
-  if ($loginFoundUser) {
-     $loginStrGroup = "";
-    
-	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
-    //declare two session variables and assign them
-    $_SESSION['MM_Username'] = $loginUsername;
-    $_SESSION['MM_UserGroup'] = $loginStrGroup;	      
-
-    if (isset($_SESSION['PrevUrl']) && true) {
-      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
-    }
-    header("Location: " . $MM_redirectLoginSuccess );
-  }
-  else {
-    header("Location: ". $MM_redirectLoginFailed );
-  }
-}
+$query_user = sprintf("SELECT * FROM Users WHERE userName = %s", GetSQLValueString($colname_user, "text"));
+$user = mysql_query($query_user, $MAMP) or die(mysql_error());
+$row_user = mysql_fetch_assoc($user);
+$totalRows_user = mysql_num_rows($user);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -106,45 +86,64 @@ h1 {
 <div id="navBar">
 	<nav>
     	<ul>
-        	<li><a href="login.php">Login</a>        	</li>
-        	<li><a href="register.php">Register</a></li>
-            <li><a href="forgotPassword.php">Forgot Password</a></li>
+        	<li><a href="account.php">Account</a>        	</li>
+        	<li></li>
+            <li></li>
         </ul>
     </nav>
     </div>
 <div id="content">
 	<div id="pageHeading">
-	  <h1>Login!</h1>
+	  <h1>Update Account</h1>
 	</div>
-    <div id="contentLeft"></div>
+    <div id="contentLeft">
+      <p>Account Links</p>
+      <p><a href="update.php">Update Account</a></p>
+    </div>
     <div id="contentRight">
-      <form id="loginForm" name="loginForm" method="POST" action="<?php echo $loginFormAction; ?>">
+      <form id="updateForm" name="updateForm" method="POST" action="<?php echo $editFormAction; ?>">
         <table width="600" border="0" align="center">
           <tr>
-            <td><span id="sprytextfield1">
-              <label for="username">Username:</label>
-              <input type="text" name="username" id="username" />
+            <td>Account <?php echo $row_user['firstName']; ?> <?php echo $row_user['lastName']; ?>| Username: <?php echo $row_user['userName']; ?></td>
+          </tr>
+        </table>
+        <table width="400" border="0" align="center">
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="83">Email:</td>
+            <td width="307"><span id="sprytextfield1">
+              <input name="email" type="text" id="email" value="<?php echo $row_user['email']; ?>" />
             <span class="textfieldRequiredMsg">A value is required.</span></span></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
+            <td>&nbsp;</td>
           </tr>
           <tr>
+            <td>Password:</td>
             <td><span id="sprytextfield2">
-              <label for="password">Password:</label>
-              <input type="text" name="password" id="password" />
+              <label for="password"></label>
+              <input name="password" type="password" id="password" value="<?php echo $row_user['password']; ?>" />
             <span class="textfieldRequiredMsg">A value is required.</span></span></td>
           </tr>
           <tr>
+            <td><input name="userID" type="hidden" id="userID" value="<?php echo $row_user['userID']; ?>" /></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td><input type="submit" name="loginButton" id="loginButton" value="Login" /></td>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="updateButton" id="updateButton" value="Update" /></td>
           </tr>
           <tr>
+            <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
         </table>
+        <p>&nbsp;</p>
+        <input type="hidden" name="MM_update" value="updateForm" />
       </form>
     </div>
   </div>
@@ -157,5 +156,5 @@ var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
 </body>
 </html>
 <?php
-mysql_free_result($login);
+mysql_free_result($user);
 ?>
