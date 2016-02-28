@@ -103,13 +103,20 @@ h1 {
 
 <body>
 <div id="holder">
-<div id="header"></div>
+<div id="header">
+<table width="200" border="0" align="right">
+	    <tr>
+	      <td><a href="admin.php"> Admin | </a><a href="logout.php">Logout</a></td>
+        </tr>
+      </table>
+
+</div>
 <div id="navBar">
 	<nav>
     	<ul>
         	<li><a href="login.php">Account</a>        	</li>
-        	<li><a href="register.php">Register</a></li>
-            <li><a href="forgotPassword.php">Forgot Password</a></li>
+        	<li>Bank</li>
+            <li>Wallet</li>
         </ul>
     </nav>
     </div>
@@ -118,10 +125,8 @@ h1 {
 	  <h1>Welcome, <?php echo $row_user['firstName']; ?> <?php echo $row_user['lastName']; ?>!</h1>
 	</div>
     <div id="contentLeft">
-      <p>Account Links</p>
-      <p><a href="logout.php">Logout</a></p>
-      <p><a href="admin.php">Admin</a></p>
-      <p><a href="admin.php"></a></p>
+      <h3>Account Links      </h3>
+      <p><a href="updateAccount.php">Update Account</a>    </p>
     </div>
     <div id="contentRight"></div>
   </div>
