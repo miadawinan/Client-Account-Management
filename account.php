@@ -1,10 +1,10 @@
-<?php @session_start();?>
+<?php @session_start(); ?>
 <?php require_once('Connections/MAMP.php'); ?>
 <?php
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "";
+$MM_authorizedUsers = "Client";
 $MM_donotCheckaccess = "true";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -33,7 +33,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "login.php";
+$MM_restrictGoTo = "index.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -86,7 +86,8 @@ $query_user = sprintf("SELECT * FROM Users WHERE userName = %s", GetSQLValueStri
 $user = mysql_query($query_user, $MAMP) or die(mysql_error());
 $row_user = mysql_fetch_assoc($user);
 $totalRows_user = mysql_num_rows($user);
-?>
+ 
+@session_start();?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -98,7 +99,7 @@ h1 {
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
+<title>MyProfile</title>
 </head>
 
 <body>
@@ -106,7 +107,7 @@ h1 {
 <div id="header">
 <table width="200" border="0" align="right">
 	    <tr>
-	      <td><a href="admin.php"> Admin | </a><a href="logout.php">Logout</a></td>
+	      <td>Role: <?php echo $row_user['role']; ?></td>
         </tr>
       </table>
 
@@ -114,9 +115,12 @@ h1 {
 <div id="navBar">
 	<nav>
     	<ul>
-        	<li><a href="login.php">Account</a>        	</li>
-        	<li>Bank</li>
-            <li>Wallet</li>
+        	<li><a href="account.php">My Profile</a>        	</li>
+        	<li><a href="logout.php">Logout</a></li>
+            <li></li>
+            <li></li>
+   	        <li></li>
+            <li><a href="employeePage.php">Employee Page</a></li>
         </ul>
     </nav>
     </div>
@@ -125,10 +129,12 @@ h1 {
 	  <h1>Welcome, <?php echo $row_user['firstName']; ?> <?php echo $row_user['lastName']; ?>!</h1>
 	</div>
     <div id="contentLeft">
-      <h3>Account Links      </h3>
-      <p><a href="updateAccount.php">Update Account</a>    </p>
-    </div>
-    <div id="contentRight"></div>
+      <h3>Account Links </h3>
+      <p><a href="updateProfile.php">Update Profile</a></p>
+      <p><a href="bankDetails.php">Bank Details</a></p>
+      <p><a href="wallet.php">Wallet Transactions</a></p>
+      <p><a href="changePassword.php">Change Password</a></p>
+    </div><div id="contentRight"></div>
   </div>
 <div id="footer"></div>
 </div>
