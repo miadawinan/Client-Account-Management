@@ -98,7 +98,7 @@ h1 {
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
+<title>Bank</title>
 </head>
 
 <body>
@@ -106,7 +106,7 @@ h1 {
 <div id="header">
 <table width="200" border="0" align="right">
 	    <tr>
-	      <td><a href="admin.php"> Admin | </a><a href="logout.php">Logout</a></td>
+	      <td>&nbsp;</td>
         </tr>
       </table>
       <div class="adminLogoutMenu" id="adminLogoutMenu"></div>
@@ -114,27 +114,22 @@ h1 {
 <div id="navBar">
 	<nav>
     	<ul>
-        	<li><a href="login.php">Account</a>        	</li>
-        	<li>Bank</li>
-            <li>Wallet</li>
+        	<li><a href="account.php">My Profile</a></li>
+        	<li><a href="logout.php">Logout</a></li>
+            <li></li>
         </ul>
     </nav>
     </div>
 <div id="content">
 	<div id="pageHeading">
-	  <h1>Bank</h1>
+	  <h1>Bank(s)</h1>
 	</div>
     <div id="contentLeft">
-      <h3>Links </h3>
+      <h3>Account Links </h3>
+      <p><a href="updateProfile.php">Update Profile</a></p>
       <p><a href="bankDetails.php">Bank Details</a></p>
-      <p><a href="addBank.php">Add Bank</a></p>
-      <p><a href="updateBank.php">Update Bank</a></p>
-      <p><a href="deleteBank.php">Delete Bank</a></p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p><a href="logout.php"></a></p>
-      <p>&nbsp;</p>
-      <p><a href="admin.php"></a></p>
+      <p><a href="wallet.php">Wallet Transactions</a></p>
+      <p><a href="changePassword.php">Change Password</a></p>
     </div>
     <div id="contentRight"></div>
   </div>
