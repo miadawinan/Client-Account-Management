@@ -1,7 +1,8 @@
+<?php @session_start(); ?>
 <?php require_once('Connections/MAMP.php'); ?>
 <?php
 // *** Logout the current user.
-$logoutGoTo = "login.php";
+$logoutGoTo = "index.php";
 if (!isset($_SESSION)) {
   session_start();
 }
