@@ -18,9 +18,9 @@ h1 {
 <div id="navBar">
 	<nav>
     	<ul>
-        	<li><a href="login.php">Login</a>        	</li>
-        	<li><a href="register.php">Register</a></li>
-            <li><a href="forgotPassword.php">Forgot Password</a></li>
+        	<li><a href="index.php">Login</a>        	</li>
+        	<li>Forgot Password</li>
+            <li></li>
         </ul>
     </nav>
     </div>
@@ -28,11 +28,11 @@ h1 {
 	<div id="pageHeading">
 	  <h1>Email Password</h1>
 	</div>
-    <div id="contentLeft">Menu Here</div>
-    <div id="contentRight">
+	<div id="contentRight">
       <form id="emailPasswordForm" name="emailPasswordForm" method="post" action="emailPasswordScript.php">
         <p>
           <label for="email"></label>
+          Email: 
           <input type="text" name="email" id="email" />
         </p>
         <p>
