@@ -103,7 +103,13 @@ h1 {
 
 <body>
 <div id="holder">
-<div id="header"></div>
+<div id="header">
+  <table width="200" border="0" align="right">
+    <tr>
+      <td>Role: <?php echo $row_user['role']; ?></td>
+    </tr>
+  </table>
+</div>
 <div id="navBar">
 	<nav>
     	<ul>
@@ -122,10 +128,11 @@ h1 {
 	  <h1>Clients</h1>
 	</div>
     <div id="contentLeft">
-      <h3>Links</h3>
-      <p><a href="manageClients.php">Manage Clients</a></p>
-      <p><a href="registerClient.php">Register Client</a></p>
-      <p>&nbsp;</p>
+      <h3>Links      </h3>
+      <p><a href="adminClientList.php">Client List</a></p>
+      <p><a href="adminRegisterClient.php">Register Client</a></p>
+      <p><a href="adminClientUpdate.php">Update Client</a></p>
+      <p><a href="adminDeleteClient.php">Delete Client</a></p>
       <p>&nbsp;</p>
       <p>&nbsp;</p>
     </div>
